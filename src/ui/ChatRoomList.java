@@ -61,6 +61,7 @@ public class ChatRoomList {
 			}
 		};
 
+		//첫번재 프레임
 		chatRoomList_frame = new JFrame();
 		chatRoomList_frame.setIconImage(Toolkit.getDefaultToolkit().getImage(ChatRoomList.class.getResource("/ui/chat.png")));
 		chatRoomList_frame.setTitle("\uCC44\uD305\uBC29 \uB9AC\uC2A4\uD2B8");
@@ -89,6 +90,7 @@ public class ChatRoomList {
 		panel.setBounds(0, 0, 732, 55);
 		chatRoomList_frame.getContentPane().add(panel);
 		panel.setLayout(null);
+		
 
 		// 검색 텍스트 창
 		textField = new JTextField();

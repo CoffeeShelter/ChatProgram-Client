@@ -23,7 +23,7 @@ public class Recv implements Runnable {
 
 		while (true) {
 			message = recv();
-			//System.out.println(message);
+			// System.out.println(message);
 			if (message == null)
 				break;
 			String[] code = message.split("/");
@@ -39,12 +39,13 @@ public class Recv implements Runnable {
 
 					}
 				} else {
+					// <방제목>/<메세지>/<닉네임>
 					Vector<ChatRoom> vec = client.getRoomList();
 					for (ChatRoom room : vec) {
 						if (room.getTitle().equals(code[0])) {
-							room.getTextWindow().append(code[1] + "\n");
-							room.getTextWindow().setCaretPosition(room.getTextWindow().getDocument().getLength()); // 맨아래로
-																													// 스크롤
+							room.InputChat(code[2], code[1]);
+							room.getShowMessage_ScrollPane().getVerticalScrollBar()
+							.setValue(room.getShowMessage_ScrollPane().getVerticalScrollBar().getMaximum());
 						}
 					}
 				}
