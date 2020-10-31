@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -31,10 +32,18 @@ public class EnterRoom {
 		ActionListener in = new ActionListener() {
 			// 입장 버튼 이벤트 처리
 			public void actionPerformed(ActionEvent e) {
-				client.send("in/" + title + "/" + textField.getText());
-				client.getRoomList().add(new ChatRoom(title, textField.getText(), client));
-				textField.setText("");
-				frame.dispose();
+				//닉네임 10자 이상 일 경우
+				if(textField.getText().length()>10) {
+					printErr("닉네임 길이 초과","닉네임은 10자 이내로 정해주세요.");
+					textField.setText("");
+				}
+				//정상 입장
+				else {
+					client.getRoomList().add(new ChatRoom(title, textField.getText(), client));
+					client.send("in/" + title + "/" + textField.getText());
+					textField.setText("");
+					frame.dispose();
+				}		
 			}
 		};
 
@@ -64,5 +73,10 @@ public class EnterRoom {
 		frame.getContentPane().add(lblNewLabel);
 
 		frame.setVisible(true);
+	}
+
+	// 에러 창 출력
+	public void printErr(String title, String msg) {
+		JOptionPane.showMessageDialog(null, msg, title, JOptionPane.ERROR_MESSAGE);
 	}
 }
