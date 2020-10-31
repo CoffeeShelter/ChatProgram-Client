@@ -2,8 +2,6 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,9 +10,9 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import client.Client;
@@ -28,7 +26,7 @@ public class ChatRoom {
 	// ui
 	private JFrame mainFrame;
 	private JTextField inputText;
-	private JPanel Message_Panel;
+	private JTextArea messageArea;
 	private JScrollPane showMessage_ScrollPane;
 
 	public ChatRoom(String title, String nickname, Client client) {
@@ -68,9 +66,9 @@ public class ChatRoom {
 		showMessage_Panel.setBackground(new Color(248, 248, 255));
 		showMessage_Panel.setLayout(new BorderLayout(0, 0));
 		
-		Message_Panel = new JPanel();
-		showMessage_Panel.add(Message_Panel, BorderLayout.NORTH);
-		Message_Panel.setLayout(new GridLayout(0,1));
+		messageArea = new JTextArea();
+		showMessage_Panel.add(messageArea, BorderLayout.NORTH);
+		messageArea.setLayout(new GridLayout(0,1));
 
 		
 		JPanel inputMessage_Panel = new JPanel();
@@ -94,48 +92,12 @@ public class ChatRoom {
 	//
 
 	public void InputChat(String name, String msg) {	
-		int count = 1;
-		StringBuilder Message = new StringBuilder("<html>");
-		Message.append(msg);
-		int index = 36;
-		for (int i = 0; i < (msg.length()) % 20; i++) {
-			if(index >= msg.length()) break;
-			Message.insert(index, "<br/>");
-			index = index + 15 + i + 1;
-			count ++;
-		}
-		Message.append("</html>");
-		msg = Message.toString();
-
-		JLabel nameLabel = new JLabel();
-		nameLabel.setText(name);
-		nameLabel.setFont(new Font("ÇÑÄÄ À±Ã¼ L", Font.PLAIN, 13));
-		if (name.equals("SYSTEM"))
-			nameLabel.setForeground(Color.red);
-		else if (name.equals(this.nickname))
-			nameLabel.setForeground(Color.blue);
-		else
-			nameLabel.setForeground(new Color(0, 128, 0));
-		nameLabel.setBounds(5, 5, 100, 15);
-
-		JLabel msgLabel = new JLabel();
-		msgLabel.setText(msg);
-		msgLabel.setFont(new Font("ÇÑÄÄ À±Ã¼ L", Font.PLAIN, 13));
-		msgLabel.setBounds(80, 5, 400, 18*count);
-
-		JPanel talkBox = new JPanel(); // ¸»Ç³¼±
-		talkBox.setPreferredSize(new Dimension(200, 25*count));
-		talkBox.setLayout(null);
-		talkBox.setBackground(new Color(248, 248, 255));
-
-		talkBox.add(nameLabel);
-
-		talkBox.add(msgLabel);
-
-		Message_Panel.add(talkBox);
 		
-		Message_Panel.revalidate();
-		Message_Panel.repaint();	
+
+		messageArea.append("["+name+"] "+msg+"\n");
+		
+		messageArea.revalidate();
+		messageArea.repaint();	
 	}
 
 	public void OutRoom() {
@@ -170,8 +132,8 @@ public class ChatRoom {
 		return inputText;
 	}
 
-	public JPanel getMessage_Panel() {
-		return Message_Panel;
+	public JTextArea getMessageArea() {
+		return messageArea;
 	}
 
 	public JScrollPane getShowMessage_ScrollPane() {

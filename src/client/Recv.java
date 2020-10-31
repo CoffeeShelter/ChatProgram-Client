@@ -44,8 +44,6 @@ public class Recv implements Runnable {
 					for (ChatRoom room : vec) {
 						if (room.getTitle().equals(code[0])) {
 							room.InputChat(code[2], code[1]);
-							room.getShowMessage_ScrollPane().getVerticalScrollBar()
-							.setValue(room.getShowMessage_ScrollPane().getVerticalScrollBar().getMaximum());
 						}
 					}
 				}
