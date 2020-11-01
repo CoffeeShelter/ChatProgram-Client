@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -46,6 +47,7 @@ public class ChatRoom {
 		this.title = title;
 
 		initialize();
+		new EmoticonWindow(this);
 	}
 
 	private void initialize() {
@@ -108,12 +110,6 @@ public class ChatRoom {
 
 		setVisible(true);
 	}
-	/*
-	 * StyledDocument doc = textPane.getStyledDocument(); SimpleAttributeSet center
-	 * = new SimpleAttributeSet(); StyleConstants.setAlignment(center,
-	 * StyleConstants.ALIGN_CENTER); doc.setParagraphAttributes(0, doc.getLength(),
-	 * center, false);
-	 */
 
 	public void InputChat(String name, String msg) {
 		StyledDocument styleDoc = showMessage_Pane.getStyledDocument(); // 메세지 화면 창 정보
@@ -168,23 +164,89 @@ public class ChatRoom {
 		try {
 			// 시스템 알림 일 때
 			if (name.equals("SYSTEM")) {
+				// 가운데 정렬
 				styleDoc.setParagraphAttributes(styleDoc.getLength(), 0, center, false);
 				styleDoc.insertString(styleDoc.getLength(), "[" + name + "] " + msg + "\n",
 						styleDoc.getStyle("SYSTEM"));
-			} else if (name.equals(this.nickname)) {
+			}
+			// 자신
+			else if (name.equals(this.nickname)) {
+				if (msg.equals("공룡")) {
+					InputEmoticon(name, "dinosaur");
+					return;
+				}
+				// 우측 정렬
 				styleDoc.setParagraphAttributes(styleDoc.getLength(), 0, right, false);
+
 				styleDoc.insertString(styleDoc.getLength(), " [" + name + "]\n", styleDoc.getStyle("ME"));
 				styleDoc.insertString(styleDoc.getLength(), msg + "\n", styleDoc.getStyle("MESSAGE"));
 
-			} else {
+			}
+			// 상대방
+			else {
+				if (msg.equals("공룡")) {
+					InputEmoticon(name, "dinosaur");
+					return;
+				}
+				// 좌측 정렬
 				styleDoc.setParagraphAttributes(styleDoc.getLength(), 0, left, false);
+
 				styleDoc.insertString(styleDoc.getLength(), "[" + name + "]\n", styleDoc.getStyle("OTHER"));
 				styleDoc.insertString(styleDoc.getLength(), msg + "\n", styleDoc.getStyle("MESSAGE"));
+
 			}
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
 
+		showMessage_Pane.setCaretPosition(styleDoc.getLength()); // 스크롤 내리기
+	}
+
+	public void InputEmoticon(String name, String emoticonName) {
+		StyledDocument styleDoc = showMessage_Pane.getStyledDocument(); // 메세지 화면 창 정보
+		Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE); // 스타일
+		ImageIcon icon = new ImageIcon("emoticons/cute-food/" + emoticonName + ".png");
+
+		// 나 - 진하기, 색 변경
+		Style style = styleDoc.addStyle("ME", def);
+		StyleConstants.setForeground(style, myColor);
+		StyleConstants.setBold(style, true);
+
+		// 상대방 - 진하기, 색 변경
+		style = styleDoc.addStyle("OTHER", def);
+		StyleConstants.setForeground(style, otherColor);
+		StyleConstants.setBold(style, true);
+
+		// 이모티콘 - 아이콘 출력
+		style = styleDoc.addStyle("EMOTICON", def);
+		StyleConstants.setIcon(style, icon);
+
+		// 상대방 - 왼쪽 정렬
+		SimpleAttributeSet left = new SimpleAttributeSet();
+		StyleConstants.setAlignment(left, StyleConstants.ALIGN_LEFT);
+
+		// 자신 (나) - 오른쪽 정렬
+		SimpleAttributeSet right = new SimpleAttributeSet();
+		StyleConstants.setAlignment(right, StyleConstants.ALIGN_RIGHT);
+
+		try {
+			// 나
+			if (this.nickname.equals(name)) {
+				styleDoc.setParagraphAttributes(styleDoc.getLength(), 0, right, false);
+				styleDoc.insertString(styleDoc.getLength(), "[" + name + "]\n", styleDoc.getStyle("ME"));
+				styleDoc.insertString(styleDoc.getLength(), "Invisible Message\n", styleDoc.getStyle("EMOTICON"));
+
+			}
+			// 상대방
+			else {
+				styleDoc.setParagraphAttributes(styleDoc.getLength(), 0, left, false);
+				styleDoc.insertString(styleDoc.getLength(), "[" + name + "]\n", styleDoc.getStyle("OTHER"));
+				styleDoc.insertString(styleDoc.getLength(), "Invisible Message\n", styleDoc.getStyle("EMOTICON"));
+			}
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+		
 		showMessage_Pane.setCaretPosition(styleDoc.getLength()); // 스크롤 내리기
 	}
 

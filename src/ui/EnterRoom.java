@@ -32,18 +32,21 @@ public class EnterRoom {
 		ActionListener in = new ActionListener() {
 			// 입장 버튼 이벤트 처리
 			public void actionPerformed(ActionEvent e) {
-				//닉네임 10자 이상 일 경우
-				if(textField.getText().length()>10) {
-					printErr("닉네임 길이 초과","닉네임은 10자 이내로 정해주세요.");
+				// 닉네임 10자 이상 일 경우
+				if (textField.getText().length() > 10) {
+					printErr("닉네임 길이 초과", "닉네임은 10자 이내로 정해주세요.");
+					textField.setText("");
+				} else if (textField.getText().equals("")) {
+					printErr("닉네임 오류", "닉네임을 입력하십시오.");
 					textField.setText("");
 				}
-				//정상 입장
+				// 정상 입장
 				else {
 					client.getRoomList().add(new ChatRoom(title, textField.getText(), client));
 					client.send("in/" + title + "/" + textField.getText());
 					textField.setText("");
 					frame.dispose();
-				}		
+				}
 			}
 		};
 

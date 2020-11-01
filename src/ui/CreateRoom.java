@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -31,19 +32,27 @@ public class CreateRoom {
 			// 추가 버튼 이벤트 처리
 			public void actionPerformed(ActionEvent e) {
 				String title = titleText.getText();
-				String nickname= nicknameText.getText();
-				client.getRoomList().add(new ChatRoom(title,nickname,client));
-				client.send("add/room/"+title);
-				
-				addRoomFrame.dispose();
+				String nickname = nicknameText.getText();
+
+				if (nickname.equals("") || title.equals("")) {
+					printErr("오류","닉네임 또는 제목을 입력하지 않으셨습니다.");
+					titleText.setText("");
+					nicknameText.setText("");
+				}else {
+					client.getRoomList().add(new ChatRoom(title, nickname, client));
+					client.send("add/room/" + title);
+
+					addRoomFrame.dispose();
+				}
 			}
 		};
 
 		addRoomFrame = new JFrame();
-		addRoomFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(CreateRoom.class.getResource("/ui/id-card.png")));
+		addRoomFrame
+				.setIconImage(Toolkit.getDefaultToolkit().getImage(CreateRoom.class.getResource("/ui/id-card.png")));
 		addRoomFrame.setTitle("방 생성");
 		addRoomFrame.setBounds(100, 100, 320, 150);
-		addRoomFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	//현재 창만 닫기
+		addRoomFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 현재 창만 닫기
 		addRoomFrame.getContentPane().setLayout(null);
 
 		titleText = new JTextField();
@@ -77,6 +86,12 @@ public class CreateRoom {
 		setVisible(true);
 	}
 
+	// 에러 창 출력
+	public void printErr(String title, String msg) {
+		JOptionPane.showMessageDialog(null, msg, title, JOptionPane.ERROR_MESSAGE);
+	}
+
+	// setter
 	public void setVisible(boolean b) {
 		addRoomFrame.setVisible(b);
 	}

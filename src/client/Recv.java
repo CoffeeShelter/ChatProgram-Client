@@ -24,30 +24,45 @@ public class Recv implements Runnable {
 		while (true) {
 			message = recv();
 			// System.out.println(message);
+			// message가 null일 경우 서버가 닫힌거로 간주.
 			if (message == null)
 				break;
+			
 			String[] code = message.split("/");
-			if (message != null) {
-				if (code[0].equals("_refresh_")) {
-					Color color = null;
-					for (int i = 1; i < code.length; i++) {
-						if (i % 2 == 0)
-							color = Color.DARK_GRAY;
-						else
-							color = Color.GRAY;
-						client.getChatRoomList().addRoomPanel(code[i], color);
+			
+			//새로고침
+			if (code[0].equals("_refresh_")) {
+				Color color = null;
+				for (int i = 1; i < code.length; i++) {
+					if (i % 2 == 0)
+						color = Color.DARK_GRAY;
+					else
+						color = Color.GRAY;
+					client.getChatRoomList().addRoomPanel(code[i], color);
 
-					}
-				} else {
-					// <방제목>/<메세지>/<닉네임>
-					Vector<ChatRoom> vec = client.getRoomList();
-					for (ChatRoom room : vec) {
-						if (room.getTitle().equals(code[0])) {
-							room.InputChat(code[2], code[1]);
-						}
+				}
+			} 
+			// 이모티콘 출력
+			// emoticon/<방제목>/<이모티콘 종류>/<보낸 사람 닉네임>
+			else if(code[0].equals("emoticon")) {
+				
+				Vector<ChatRoom> vec = client.getRoomList();
+				for (ChatRoom room : vec) {
+					if (room.getTitle().equals(code[1])) {
+						room.InputEmoticon(code[3], code[2]);
 					}
 				}
 			}
+			else {
+				// <방제목>/<메세지>/<닉네임>
+				Vector<ChatRoom> vec = client.getRoomList();
+				for (ChatRoom room : vec) {
+					if (room.getTitle().equals(code[0])) {
+						room.InputChat(code[2], code[1]);
+					}
+				}
+			}
+
 		}
 		System.out.println("리시브 쓰레드 종료");
 	}
