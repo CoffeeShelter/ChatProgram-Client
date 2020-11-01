@@ -41,9 +41,9 @@ public class CreateRoom {
 				}else {
 					client.getRoomList().add(new ChatRoom(title, nickname, client));
 					client.send("add/room/" + title);
-
 					addRoomFrame.dispose();
 				}
+				client.getChatRoomList().refreshRoom();
 			}
 		};
 

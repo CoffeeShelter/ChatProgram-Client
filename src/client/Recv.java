@@ -35,9 +35,9 @@ public class Recv implements Runnable {
 				Color color = null;
 				for (int i = 1; i < code.length; i++) {
 					if (i % 2 == 0)
-						color = Color.DARK_GRAY;
+						color = new Color(192, 192, 192);
 					else
-						color = Color.GRAY;
+						color =new Color(105, 105, 105);
 					client.getChatRoomList().addRoomPanel(code[i], color);
 
 				}

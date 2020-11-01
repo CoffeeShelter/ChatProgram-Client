@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -40,14 +42,19 @@ public class ChatRoom {
 	private Color systemColor = Color.red; // 시스템
 	private Color myColor = new Color(0, 0, 128); // 나
 	private Color otherColor = new Color(0, 100, 0); // 상대방
-
+	
+	// 이모티콘 선택 창
+	// Ctrl + I 키로 온, 오프
+	EmoticonWindow emoticonWindow = new EmoticonWindow(this);
+	
 	public ChatRoom(String title, String nickname, Client client) {
 		this.client = client;
 		this.nickname = nickname;
 		this.title = title;
 
 		initialize();
-		new EmoticonWindow(this);
+		emoticonWindow.setVisible(false);
+		
 	}
 
 	private void initialize() {
@@ -61,6 +68,37 @@ public class ChatRoom {
 				client.send(message);
 				inputText.setText("");
 			}
+		};
+		
+		//키보드 입력 처리
+		KeyListener keyListener = new KeyListener() {
+			boolean isPressedCtrl = false;
+			
+			public void keyTyped(KeyEvent e) {
+				
+			}
+
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_CONTROL) {
+					isPressedCtrl = true;
+				}
+				
+				if(e.getKeyCode() == KeyEvent.VK_I) {
+					if(isPressedCtrl) {
+						if(emoticonWindow.isVisible()) {
+							emoticonWindow.setVisible(false);
+						}else
+							emoticonWindow.setVisible(true);
+					}
+				}
+			}
+
+			public void keyReleased(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_CONTROL) {
+					isPressedCtrl = false;
+				}
+			}
+			
 		};
 
 		// 메인 프레임
@@ -99,6 +137,7 @@ public class ChatRoom {
 		inputText = new JTextField();
 		inputText.setBounds(0, 0, 288, 43);
 		inputText.addActionListener(enterText);
+		inputText.addKeyListener(keyListener);
 		inputMessage_Panel.add(inputText);
 		inputText.setColumns(10);
 
@@ -314,6 +353,7 @@ public class ChatRoom {
 		// 윈도우가 닫히려고 할 때. (X버튼 눌렀을 때)
 		public void windowClosing(WindowEvent e) {
 			OutRoom();
+			client.getChatRoomList().refreshRoom();
 		}
 
 		// 윈도우가 닫힌 후.

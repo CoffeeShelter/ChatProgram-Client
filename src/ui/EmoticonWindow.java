@@ -1,6 +1,8 @@
 package ui;
 
 import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -29,11 +31,44 @@ public class EmoticonWindow {
 	}
 
 	private void initialize() {
+		// 키보드 입력 처리
+		KeyListener keyListener = new KeyListener() {
+			boolean isPressedCtrl = false;
+			
+			//특정 키 눌렸을 때
+			public void keyTyped(KeyEvent e) {
+
+			}
+			//키 눌렀을 때
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+					isPressedCtrl = true;
+				}
+
+				if (e.getKeyCode() == KeyEvent.VK_I) {
+					if (isPressedCtrl) {
+						if (emoticonSelectWindow.isVisible()) {
+							emoticonSelectWindow.setVisible(false);
+						} else
+							emoticonSelectWindow.setVisible(true);
+					}
+				}
+			}
+			//키 땠을 때
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+					isPressedCtrl = false;
+				}
+			}
+
+		};
+
 		emoticonSelectWindow = new JFrame();
 		emoticonSelectWindow.setTitle("\uC774\uBAA8\uD2F0\uCF58 \uC120\uD0DD \uCC3D");
 		emoticonSelectWindow.setBounds(100, 100, 320, 400);
 		emoticonSelectWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		emoticonSelectWindow.getContentPane().setLayout(null);
+		emoticonSelectWindow.addKeyListener(keyListener);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 330, 400);
@@ -48,7 +83,6 @@ public class EmoticonWindow {
 		}
 		scrollPane.add(scrollViewPanel);
 		scrollPane.setViewportView(scrollViewPanel);
-		emoticonSelectWindow.setVisible(true);
 	}
 
 	private void addEmoticon(ImageIcon icon, String fileName, String iconName) {
@@ -63,5 +97,14 @@ public class EmoticonWindow {
 		JLabel emoticonLabel = new JLabel(icon);
 		emoticonLabel.addMouseListener(mouseAdapther);
 		scrollViewPanel.add(emoticonLabel);
+	}
+
+	public boolean isVisible() {
+		return emoticonSelectWindow.isVisible();
+	}
+
+	// setter
+	public void setVisible(boolean b) {
+		emoticonSelectWindow.setVisible(b);
 	}
 }
