@@ -5,10 +5,12 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -31,6 +33,8 @@ public class ChatRoomList {
 	private JTextField textField; // 검색 창
 	private JPanel roomsPanel; // 채팅 방 리스트를 담을 패널
 
+	private int oldX;
+	private int oldY;
 	// 중복 체크용 채팅 방 제목 벡터
 	// private Vector<String> titleList = new Vector<String>();
 
@@ -41,6 +45,7 @@ public class ChatRoomList {
 	}
 
 	private void initialize() {
+		// 종료 버튼
 		MouseListener exitListener = new MouseListener() {
 
 			public void mouseClicked(MouseEvent e) {
@@ -65,6 +70,32 @@ public class ChatRoomList {
 
 		};
 
+		// 최소화 버튼
+		MouseListener miniListener = new MouseListener() {
+
+			public void mouseClicked(MouseEvent e) {
+				frame.setState(Frame.ICONIFIED);
+			}
+
+			public void mousePressed(MouseEvent e) {
+
+			}
+
+			public void mouseReleased(MouseEvent e) {
+
+			}
+
+			public void mouseEntered(MouseEvent e) {
+
+			}
+
+			public void mouseExited(MouseEvent e) {
+
+			}
+
+		};
+
+		// 방추가 버튼
 		MouseListener addRoomListener = new MouseListener() {
 
 			public void mouseClicked(MouseEvent e) {
@@ -89,6 +120,7 @@ public class ChatRoomList {
 
 		};
 
+		// 새로고침 버튼
 		MouseListener refreshListener = new MouseListener() {
 
 			public void mouseClicked(MouseEvent e) {
@@ -113,6 +145,45 @@ public class ChatRoomList {
 
 		};
 
+		// 마우스 위치 구하기 용도
+		MouseListener mouseListener = new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+				oldX = e.getLocationOnScreen().x;
+				oldY = e.getLocationOnScreen().y;
+			}
+
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			public void mouseExited(MouseEvent e) {
+			}
+		};
+
+		// 프레임 옮기기 용도
+		MouseMotionListener mouseMotion = new MouseMotionListener() {
+			int moveX, moveY;
+
+			public void mouseDragged(MouseEvent e) {
+				moveX = e.getLocationOnScreen().x - oldX; // 움직인 x거리
+				moveY = e.getLocationOnScreen().y - oldY; // 움직인 y거리
+				frame.setLocation(frame.getLocationOnScreen().x + moveX, frame.getLocationOnScreen().y + moveY); // 프레임
+																													// 이동
+				oldX = e.getLocationOnScreen().x; // 움직인 거리 초기화
+				oldY = e.getLocationOnScreen().y; // 움직인 거리 초기화
+			}
+
+			public void mouseMoved(MouseEvent e) {
+
+			}
+
+		};
+
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		frame = new JFrame();
@@ -122,7 +193,10 @@ public class ChatRoomList {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setUndecorated(true);
 		frame.getContentPane().setLayout(null);
+		frame.getContentPane().addMouseListener(mouseListener);
+		frame.getContentPane().addMouseMotionListener(mouseMotion);
 
+		// 종료 버튼
 		JLabel exitButton_Label = new JLabel("X");
 		exitButton_Label.setHorizontalAlignment(SwingConstants.CENTER);
 		exitButton_Label.setForeground(Color.WHITE);
@@ -130,6 +204,15 @@ public class ChatRoomList {
 		exitButton_Label.setBounds(992, 0, 32, 32);
 		exitButton_Label.addMouseListener(exitListener);
 		frame.getContentPane().add(exitButton_Label);
+
+		// 최소화 버튼
+		JLabel miniButton_Label = new JLabel("_");
+		miniButton_Label.setHorizontalAlignment(SwingConstants.CENTER);
+		miniButton_Label.setForeground(Color.WHITE);
+		miniButton_Label.setFont(new Font("굴림", Font.BOLD, 15));
+		miniButton_Label.setBounds(970, 0, 32, 32);
+		miniButton_Label.addMouseListener(miniListener);
+		frame.getContentPane().add(miniButton_Label);
 
 		JPanel left_Panel = new JPanel();
 		left_Panel.setBackground(Color.GRAY);
@@ -330,4 +413,5 @@ public class ChatRoomList {
 	public JTextField getTextField() {
 		return textField;
 	}
+
 }

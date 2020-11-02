@@ -64,14 +64,14 @@ public class EmoticonWindow {
 		};
 
 		emoticonSelectWindow = new JFrame();
-		emoticonSelectWindow.setTitle("\uC774\uBAA8\uD2F0\uCF58 \uC120\uD0DD \uCC3D");
+		emoticonSelectWindow.setTitle("이모티콘 선택 창");
 		emoticonSelectWindow.setBounds(100, 100, 320, 400);
 		emoticonSelectWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		emoticonSelectWindow.getContentPane().setLayout(null);
 		emoticonSelectWindow.addKeyListener(keyListener);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 330, 400);
+		scrollPane.setBounds(0, 0, 304, 361);
 		emoticonSelectWindow.getContentPane().add(scrollPane);
 
 		scrollViewPanel = new JPanel();
@@ -106,5 +106,10 @@ public class EmoticonWindow {
 	// setter
 	public void setVisible(boolean b) {
 		emoticonSelectWindow.setVisible(b);
+	}
+	
+	// getter
+	public JFrame getMainFrame() {
+		return emoticonSelectWindow;
 	}
 }

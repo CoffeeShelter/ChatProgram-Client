@@ -2,20 +2,24 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
@@ -38,15 +42,24 @@ public class ChatRoom {
 	// private JTextArea messageArea;
 	private JTextPane showMessage_Pane;
 
+	private JLabel iconLabel;
+	private JLabel miniLabel;
+	private JLabel titleLabel;
+	private JLabel sendButton;
+
 	// 메세지 색상
 	private Color systemColor = Color.red; // 시스템
 	private Color myColor = new Color(0, 0, 128); // 나
 	private Color otherColor = new Color(0, 100, 0); // 상대방
-	
+
+	// 화면 위치 바꾸기 위한 변수
+	private int oldX; // 이동 전 x 좌표
+	private int oldY; // 이동 전 y 좌표
+
 	// 이모티콘 선택 창
 	// Ctrl + I 키로 온, 오프
 	EmoticonWindow emoticonWindow = new EmoticonWindow(this);
-	
+
 	public ChatRoom(String title, String nickname, Client client) {
 		this.client = client;
 		this.nickname = nickname;
@@ -54,10 +67,125 @@ public class ChatRoom {
 
 		initialize();
 		emoticonWindow.setVisible(false);
-		
+
 	}
 
 	private void initialize() {
+		// 종료 버튼
+		MouseListener exitListener = new MouseListener() {
+
+			public void mouseClicked(MouseEvent e) {
+				mainFrame.dispose();
+				OutRoom();
+				client.getChatRoomList().refreshRoom();
+				emoticonWindow.getMainFrame().dispose();
+			}
+
+			public void mousePressed(MouseEvent e) {
+
+			}
+
+			public void mouseReleased(MouseEvent e) {
+
+			}
+
+			public void mouseEntered(MouseEvent e) {
+
+			}
+
+			public void mouseExited(MouseEvent e) {
+
+			}
+
+		};
+
+		// 최소화 버튼
+		MouseListener miniListener = new MouseListener() {
+
+			public void mouseClicked(MouseEvent e) {
+				mainFrame.setState(Frame.ICONIFIED);
+			}
+
+			public void mousePressed(MouseEvent e) {
+
+			}
+
+			public void mouseReleased(MouseEvent e) {
+
+			}
+
+			public void mouseEntered(MouseEvent e) {
+
+			}
+
+			public void mouseExited(MouseEvent e) {
+
+			}
+
+		};
+
+		// 마우스 위치 구하기 용도
+		MouseListener mouseListener = new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+				oldX = e.getLocationOnScreen().x;
+				oldY = e.getLocationOnScreen().y;
+			}
+
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			public void mouseExited(MouseEvent e) {
+			}
+		};
+
+		// 프레임 옮기기 용도
+		MouseMotionListener mouseMotion = new MouseMotionListener() {
+			int moveX, moveY;
+
+			public void mouseDragged(MouseEvent e) {
+				moveX = e.getLocationOnScreen().x - oldX; // 움직인 x거리
+				moveY = e.getLocationOnScreen().y - oldY; // 움직인 y거리
+				mainFrame.setLocation(mainFrame.getLocationOnScreen().x + moveX,
+						mainFrame.getLocationOnScreen().y + moveY); // 프레임
+				// 이동
+				oldX = e.getLocationOnScreen().x; // 움직인 거리 초기화
+				oldY = e.getLocationOnScreen().y; // 움직인 거리 초기화
+			}
+
+			public void mouseMoved(MouseEvent e) {
+
+			}
+
+		};
+
+		// 메세지 전송 버튼
+		MouseListener enterTextButton = new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+				String message = title;
+				message = message + "/" + inputText.getText() + "/" + nickname; // 방제목/메세지/닉네임
+				client.send(message);
+				inputText.setText("");
+
+			}
+
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			public void mouseExited(MouseEvent e) {
+			}
+		};
 
 		// 메세지 전송 이벤트
 		ActionListener enterText = new ActionListener() {
@@ -69,83 +197,117 @@ public class ChatRoom {
 				inputText.setText("");
 			}
 		};
-		
-		//키보드 입력 처리
+
+		// 키보드 입력 처리
 		KeyListener keyListener = new KeyListener() {
 			boolean isPressedCtrl = false;
-			
+
 			public void keyTyped(KeyEvent e) {
-				
+
 			}
 
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_CONTROL) {
+				if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
 					isPressedCtrl = true;
 				}
-				
-				if(e.getKeyCode() == KeyEvent.VK_I) {
-					if(isPressedCtrl) {
-						if(emoticonWindow.isVisible()) {
+
+				if (e.getKeyCode() == KeyEvent.VK_I) {
+					if (isPressedCtrl) {
+						if (emoticonWindow.isVisible()) {
 							emoticonWindow.setVisible(false);
-						}else
+						} else
 							emoticonWindow.setVisible(true);
 					}
 				}
 			}
 
 			public void keyReleased(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_CONTROL) {
+				if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
 					isPressedCtrl = false;
 				}
 			}
-			
+
 		};
 
 		// 메인 프레임
 		mainFrame = new JFrame();
+		mainFrame.getContentPane().setBackground(new Color(173, 216, 230));
 		mainFrame.setTitle(title);
-		mainFrame.setBounds(100, 100, 400, 520);
-		mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		mainFrame.setBounds(100, 100, 350, 520);
 		mainFrame.getContentPane().setLayout(null);
-		mainFrame.addWindowListener(winListener);
+		mainFrame.getContentPane().addMouseListener(mouseListener);
+		mainFrame.getContentPane().addMouseMotionListener(mouseMotion);
+		mainFrame.setUndecorated(true);
 
 		// < 위 프레임 >
 
 		// 스크롤 프레임
 		showMessage_ScrollPane = new JScrollPane();
-		showMessage_ScrollPane.setBounds(0, 0, 384, 440);
+		showMessage_ScrollPane.setBounds(0, 52, 350, 428);
 		mainFrame.getContentPane().add(showMessage_ScrollPane);
 
 		// 메세지 화면
 		showMessage_Pane = new JTextPane();
 		showMessage_Pane
 				.setPreferredSize(new Dimension(showMessage_ScrollPane.getWidth(), showMessage_ScrollPane.getHeight()));
-		showMessage_Pane.setBackground(new Color(248, 248, 255));
+		showMessage_Pane.setBackground(new Color(173, 216, 230));
 		showMessage_Pane.setEditable(false); // 화면 수정 불가.
 
-		showMessage_ScrollPane.setViewportView(showMessage_Pane);
+		showMessage_ScrollPane.setColumnHeaderView(showMessage_Pane);
 
 		// < 아래 프레임 >
 
 		// 메세지 입력창 프레임
 		JPanel inputMessage_Panel = new JPanel();
-		inputMessage_Panel.setBounds(0, 438, 384, 43);
+		inputMessage_Panel.setBackground(new Color(255, 250, 205));
+		inputMessage_Panel.setBounds(0, 478, 350, 43);
 		mainFrame.getContentPane().add(inputMessage_Panel);
 		inputMessage_Panel.setLayout(null);
 
 		// 메세지 입력 텍스트 필드
 		inputText = new JTextField();
 		inputText.setBounds(0, 0, 288, 43);
+		inputMessage_Panel.add(inputText);
 		inputText.addActionListener(enterText);
 		inputText.addKeyListener(keyListener);
-		inputMessage_Panel.add(inputText);
 		inputText.setColumns(10);
 
-		// 메세지 입력 버튼
-		JButton inputButton = new JButton("전송");
-		inputButton.setBounds(287, 0, 97, 43);
-		inputButton.addActionListener(enterText);
-		inputMessage_Panel.add(inputButton);
+		sendButton = new JLabel("\uC804\uC1A1");
+		sendButton.setHorizontalAlignment(SwingConstants.CENTER);
+		sendButton.setBounds(287, 0, 63, 43);
+		sendButton.addMouseListener(enterTextButton);
+		inputMessage_Panel.add(sendButton);
+
+		JPanel titlePane = new JPanel();
+		titlePane.setBackground(new Color(163, 206, 220));
+		titlePane.setBounds(0, 0, 350, 53);
+		mainFrame.getContentPane().add(titlePane);
+		titlePane.setLayout(null);
+
+		iconLabel = new JLabel("");
+		iconLabel.setIcon(new ImageIcon(ChatRoom.class.getResource("/ui/talking.png")));
+		iconLabel.setBounds(12, 10, 32, 32);
+		titlePane.add(iconLabel);
+
+		JLabel exitLabel = new JLabel("X");
+		exitLabel.setFont(new Font("굴림", Font.BOLD, 15));
+		exitLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		exitLabel.setBounds(323, 10, 15, 15);
+		exitLabel.addMouseListener(exitListener);
+		titlePane.add(exitLabel);
+
+		miniLabel = new JLabel("_");
+		miniLabel.setFont(new Font("굴림", Font.BOLD, 15));
+		miniLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		miniLabel.setBounds(303, 10, 15, 15);
+		miniLabel.addMouseListener(miniListener);
+		titlePane.add(miniLabel);
+
+		titleLabel = new JLabel(title);
+		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		titleLabel.setFont(new Font("휴먼편지체", Font.BOLD, 20));
+		titleLabel.setBounds(60, 10, 231, 33);
+		titlePane.add(titleLabel);
 
 		setVisible(true);
 	}
@@ -285,7 +447,7 @@ public class ChatRoom {
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
-		
+
 		showMessage_Pane.setCaretPosition(styleDoc.getLength()); // 스크롤 내리기
 	}
 
@@ -328,42 +490,4 @@ public class ChatRoom {
 		return showMessage_ScrollPane;
 	}
 
-	// 윈도우 이벤트 처리
-	WindowListener winListener = new WindowListener() {
-		// 창 종료 이벤트 처리
-		public void windowOpened(WindowEvent e) {
-
-		}
-
-		// 윈도우가 아이콘화 됐을 때
-		public void windowIconified(WindowEvent e) {
-
-		}
-
-		// 윈도우가 정상화 될 때
-		public void windowDeiconified(WindowEvent e) {
-
-		}
-
-		// 윈도우가 비활성화 될 떄
-		public void windowDeactivated(WindowEvent e) {
-
-		}
-
-		// 윈도우가 닫히려고 할 때. (X버튼 눌렀을 때)
-		public void windowClosing(WindowEvent e) {
-			OutRoom();
-			client.getChatRoomList().refreshRoom();
-		}
-
-		// 윈도우가 닫힌 후.
-		public void windowClosed(WindowEvent e) {
-
-		}
-
-		// 윈도우가 활성화 될 때
-		public void windowActivated(WindowEvent e) {
-
-		}
-	};
 }
