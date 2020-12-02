@@ -45,7 +45,7 @@ public class EmoticonWindow {
 					isPressedCtrl = true;
 				}
 
-				if (e.getKeyCode() == KeyEvent.VK_I) {
+				if (e.getKeyCode() == KeyEvent.VK_E) {
 					if (isPressedCtrl) {
 						if (emoticonSelectWindow.isVisible()) {
 							emoticonSelectWindow.setVisible(false);
