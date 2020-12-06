@@ -15,8 +15,11 @@
 
 ### 실행 화면
   * 시작 화면
+  
 ![채팅방 리스트](https://user-images.githubusercontent.com/73472675/101281857-f1abc680-3814-11eb-8f2b-a5a626601e27.PNG)
   * 채팅방 화면
+  
 ![채팅 방 여러명 접속 가능](https://user-images.githubusercontent.com/73472675/101281950-87dfec80-3815-11eb-963f-7bd729dd4616.PNG)
   * 이모티콘 선택 창
+  
 ![이모티콘 선택 창](https://user-images.githubusercontent.com/73472675/101281953-89a9b000-3815-11eb-83bb-3d7477535bba.PNG)
