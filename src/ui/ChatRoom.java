@@ -211,7 +211,7 @@ public class ChatRoom {
 					isPressedCtrl = true;
 				}
 
-				if (e.getKeyCode() == KeyEvent.VK_I) {
+				if (e.getKeyCode() == KeyEvent.VK_E) {
 					if (isPressedCtrl) {
 						if (emoticonWindow.isVisible()) {
 							emoticonWindow.setVisible(false);

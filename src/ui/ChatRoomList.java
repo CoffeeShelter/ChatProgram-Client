@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -44,6 +46,8 @@ public class ChatRoomList {
 		this.client = client;
 		initialize();
 		frame.setVisible(true);
+		
+		refreshRoom();
 	}
 
 	private void initialize() {
@@ -184,6 +188,21 @@ public class ChatRoomList {
 
 			}
 
+		};
+		
+		// 검색 텍스트필드 이벤트
+		ActionListener searchListener = new ActionListener() {
+			// 검색 텍스트필드 엔터키 이벤트 처리
+			public void actionPerformed(ActionEvent e) {
+				String command = "search/";
+				String roomTitle;
+				roomTitle = textField.getText();
+				
+				command += roomTitle;
+				
+				client.send(command);
+				textField.setText("");
+			}
 		};
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -348,6 +367,7 @@ public class ChatRoomList {
 		textField.setBounds(430, 30, 230, 35);
 		ChatRoomList.add(textField);
 		textField.setColumns(10);
+		textField.addActionListener(searchListener);
 
 		JLabel lblNewLabel_5 = new JLabel("");
 		lblNewLabel_5.setIcon(new ImageIcon(ChatRoomList.class.getResource("/ui/search.png")));
@@ -481,4 +501,8 @@ public class ChatRoomList {
 	{
 		return roomsPanel;
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c1cebbb2d429581f491980444f5fc0c4fc690c92
 }

@@ -71,7 +71,32 @@ public class Recv implements Runnable {
 						room.InputEmoticon(code[3], code[2]);
 					}
 				}
+<<<<<<< HEAD
 			} else {
+=======
+			}
+			// 검색한 채팅방 리스트 출력
+			// search/<방제목>/.../<방제목>
+			else if(code[0].equals("search"))
+			{
+				Color color = null;
+				
+				client.getChatRoomList().getRoomPanel().removeAll();
+				client.getChatRoomList().getRoomPanel().revalidate();				
+				client.getChatRoomList().getRoomPanel().repaint();
+
+				for (int i = 1; i < code.length; i++) {
+					if (i % 2 == 0)
+						color = new Color(192, 192, 192);
+					else
+						color =new Color(105, 105, 105);
+					client.getChatRoomList().addRoomPanel(code[i], color);
+
+				}
+				System.out.println(message);
+			}
+			else {
+>>>>>>> c1cebbb2d429581f491980444f5fc0c4fc690c92
 				// <방제목>/<메세지>/<닉네임>
 				Vector<ChatRoom> vec = client.getRoomList();
 				for (ChatRoom room : vec) {
