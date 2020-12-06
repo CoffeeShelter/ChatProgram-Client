@@ -23,3 +23,6 @@
   * 이모티콘 선택 창
   
 ![이모티콘 선택 창](https://user-images.githubusercontent.com/73472675/101281953-89a9b000-3815-11eb-83bb-3d7477535bba.PNG)
+
+### 이모티콘에 사용된 아이콘
+<div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
