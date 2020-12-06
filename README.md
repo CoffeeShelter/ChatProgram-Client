@@ -14,4 +14,5 @@
 ----------------
 
 ### 실행 화면
-<img src="https://user-images.githubusercontent.com/73472675/101281857-f1abc680-3814-11eb-8f2b-a5a626601e27.png" width="90%"></img>
+![채팅방 리스트](https://user-images.githubusercontent.com/73472675/101281857-f1abc680-3814-11eb-8f2b-a5a626601e27.PNG)
+
