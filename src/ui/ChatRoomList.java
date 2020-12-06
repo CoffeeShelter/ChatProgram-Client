@@ -23,6 +23,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
 import client.Client;
+import java.awt.SystemColor;
+import javax.swing.JTextPane;
 
 public class ChatRoomList {
 
@@ -233,7 +235,7 @@ public class ChatRoomList {
 		left_Panel.add(lblNewLabel_1);
 
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.LIGHT_GRAY);
+		panel.setBackground(SystemColor.controlShadow);
 		panel.setBounds(0, 175, 300, 70);
 		left_Panel.add(panel);
 		panel.setLayout(null);
@@ -251,20 +253,81 @@ public class ChatRoomList {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.LIGHT_GRAY);
-		panel_1.setBounds(0, 254, 300, 70);
+		panel_1.setBounds(0, 254, 300, 329);
 		left_Panel.add(panel_1);
 		panel_1.setLayout(null);
 
 		JLabel lblNewLabel_2_1 = new JLabel("");
-		lblNewLabel_2_1.setIcon(new ImageIcon(ChatRoomList.class.getResource("/ui/question.png")));
 		lblNewLabel_2_1.setBounds(24, 0, 70, 70);
+		lblNewLabel_2_1.setIcon(new ImageIcon(ChatRoomList.class.getResource("/ui/question.png")));
 		panel_1.add(lblNewLabel_2_1);
 
 		JLabel lblNewLabel_4 = new JLabel("Explanation");
+		lblNewLabel_4.setBounds(106, 0, 194, 70);
 		lblNewLabel_4.setFont(new Font("±¼¸²", Font.BOLD, 24));
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_4.setBounds(106, 0, 194, 70);
 		panel_1.add(lblNewLabel_4);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(SystemColor.controlHighlight);
+		panel_2.setBounds(0, 69, 300, 260);
+		panel_1.add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel lblNewLabel_6 = new JLabel("");
+		lblNewLabel_6.setIcon(new ImageIcon(ChatRoomList.class.getResource("/ui/add.png")));
+		lblNewLabel_6.setBounds(12, 10, 32, 32);
+		panel_2.add(lblNewLabel_6);
+		
+		JLabel lblNewLabel_6_1 = new JLabel("");
+		lblNewLabel_6_1.setIcon(new ImageIcon(ChatRoomList.class.getResource("/ui/refresh.png")));
+		lblNewLabel_6_1.setBounds(12, 60, 32, 32);
+		panel_2.add(lblNewLabel_6_1);
+		
+		JLabel lblNewLabel_6_2 = new JLabel("");
+		lblNewLabel_6_2.setIcon(new ImageIcon(ChatRoomList.class.getResource("/ui/search.png")));
+		lblNewLabel_6_2.setBounds(12, 110, 32, 32);
+		panel_2.add(lblNewLabel_6_2);
+		
+		JTextPane textPane = new JTextPane();
+		textPane.setBackground(SystemColor.controlHighlight);
+		textPane.setFont(new Font("±¼¸²", Font.BOLD, 20));
+		textPane.setText("\uBC29 \uCD94\uAC00 \uBC84\uD2BC");
+		textPane.setBounds(56, 10, 232, 32);
+		panel_2.add(textPane);
+		
+		JTextPane textPane_1 = new JTextPane();
+		textPane_1.setText("\uCC44\uD305\uBC29 \uB9AC\uC2A4\uD2B8 \uC0C8\uB85C\uACE0\uCE68");
+		textPane_1.setFont(new Font("±¼¸²", Font.BOLD, 20));
+		textPane_1.setBackground(SystemColor.controlHighlight);
+		textPane_1.setBounds(56, 60, 232, 32);
+		panel_2.add(textPane_1);
+		
+		JTextPane textPane_2 = new JTextPane();
+		textPane_2.setText("\uAC80\uC0C9 \uBC84\uD2BC");
+		textPane_2.setFont(new Font("±¼¸²", Font.BOLD, 20));
+		textPane_2.setBackground(SystemColor.controlHighlight);
+		textPane_2.setBounds(56, 110, 232, 32);
+		panel_2.add(textPane_2);
+		
+		JLabel lblNewLabel_6_2_1 = new JLabel("");
+		lblNewLabel_6_2_1.setIcon(new ImageIcon(ChatRoomList.class.getResource("/ui/enter.png")));
+		lblNewLabel_6_2_1.setBounds(11, 160, 32, 32);
+		panel_2.add(lblNewLabel_6_2_1);
+		
+		JTextPane textPane_2_1 = new JTextPane();
+		textPane_2_1.setText("\uBC29 \uC785\uC7A5");
+		textPane_2_1.setFont(new Font("±¼¸²", Font.BOLD, 20));
+		textPane_2_1.setBackground(SystemColor.controlHighlight);
+		textPane_2_1.setBounds(56, 160, 232, 32);
+		panel_2.add(textPane_2_1);
+		
+		JTextPane textPane_2_1_1 = new JTextPane();
+		textPane_2_1_1.setText("Ctrl + E \uC774\uBAA8\uD2F0\uCF58 \uCC3D");
+		textPane_2_1_1.setFont(new Font("±¼¸²", Font.BOLD, 20));
+		textPane_2_1_1.setBackground(SystemColor.controlHighlight);
+		textPane_2_1_1.setBounds(12, 213, 276, 37);
+		panel_2.add(textPane_2_1_1);
 
 		JPanel right_Panel = new JPanel();
 		right_Panel.setBackground(Color.DARK_GRAY);
@@ -414,4 +477,8 @@ public class ChatRoomList {
 		return textField;
 	}
 
+	public JPanel getRoomPanel()
+	{
+		return roomsPanel;
+	}
 }

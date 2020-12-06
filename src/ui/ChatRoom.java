@@ -239,8 +239,6 @@ public class ChatRoom {
 		mainFrame.getContentPane().addMouseMotionListener(mouseMotion);
 		mainFrame.setUndecorated(true);
 
-		// < 위 프레임 >
-
 		// 스크롤 프레임
 		showMessage_ScrollPane = new JScrollPane();
 		showMessage_ScrollPane.setBounds(0, 52, 350, 428);
@@ -252,11 +250,8 @@ public class ChatRoom {
 				.setPreferredSize(new Dimension(showMessage_ScrollPane.getWidth(), showMessage_ScrollPane.getHeight()));
 		showMessage_Pane.setBackground(new Color(173, 216, 230));
 		showMessage_Pane.setEditable(false); // 화면 수정 불가.
-
-		showMessage_ScrollPane.setColumnHeaderView(showMessage_Pane);
-
-		// < 아래 프레임 >
-
+		showMessage_ScrollPane.setViewportView(showMessage_Pane);
+		
 		// 메세지 입력창 프레임
 		JPanel inputMessage_Panel = new JPanel();
 		inputMessage_Panel.setBackground(new Color(255, 250, 205));
@@ -267,14 +262,14 @@ public class ChatRoom {
 		// 메세지 입력 텍스트 필드
 		inputText = new JTextField();
 		inputText.setBounds(0, 0, 288, 43);
-		inputMessage_Panel.add(inputText);
 		inputText.addActionListener(enterText);
 		inputText.addKeyListener(keyListener);
 		inputText.setColumns(10);
+		inputMessage_Panel.add(inputText);
 
-		sendButton = new JLabel("\uC804\uC1A1");
+		sendButton = new JLabel("전송");
 		sendButton.setHorizontalAlignment(SwingConstants.CENTER);
-		sendButton.setBounds(287, 0, 63, 43);
+		sendButton.setBounds(287, 0, 62, 43);
 		sendButton.addMouseListener(enterTextButton);
 		inputMessage_Panel.add(sendButton);
 
@@ -489,5 +484,4 @@ public class ChatRoom {
 	public JScrollPane getShowMessage_ScrollPane() {
 		return showMessage_ScrollPane;
 	}
-
 }

@@ -134,7 +134,6 @@ public class Client {
 	public PrintWriter getPrintWriter() {
 		return pw;
 	}
-
 	
 	//setter
 	public void setExit(boolean b) {
