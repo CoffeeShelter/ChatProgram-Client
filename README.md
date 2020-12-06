@@ -10,3 +10,8 @@
   * 여러 채팅방 동시 입장 가능
   * 원하는 닉네임으로 채팅 가능
   * 이모티콘 전송
+
+----------------
+
+### 실행 화면
+<img src="https://user-images.githubusercontent.com/73472675/101281857-f1abc680-3814-11eb-8f2b-a5a626601e27.png" width="90%"></img>
